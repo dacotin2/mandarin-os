@@ -1,0 +1,28 @@
+Architectures: amd64 all
+Codename: estable
+Components: main
+Date: Tue, 17 Nov 2026 18:52:39 +0000
+Description: Actualizaciones de Mandarin OS
+Label: Mandarin OS
+Origin: Mandarin OS
+Suite: estable
+MD5Sum:
+ 1f1399f940ebebf1c66cb26d35777ab2             3318 main/binary-all/Packages
+ e25934f5a208ffe873f43b7589051d1f             1126 main/binary-all/Packages.gz
+ 1f1399f940ebebf1c66cb26d35777ab2             3318 main/binary-amd64/Packages
+ e25934f5a208ffe873f43b7589051d1f             1126 main/binary-amd64/Packages.gz
+SHA1:
+ f599b13bee0702687dc08af5db4cca6de79444b0             3318 main/binary-all/Packages
+ ea970adbf071adc71de679b0badf61ac25ca8317             1126 main/binary-all/Packages.gz
+ f599b13bee0702687dc08af5db4cca6de79444b0             3318 main/binary-amd64/Packages
+ ea970adbf071adc71de679b0badf61ac25ca8317             1126 main/binary-amd64/Packages.gz
+SHA256:
+ b4a3217b127b8aa87efb75f52d9c7dffd2d491c547a2516f6d62e58f09253e2d             3318 main/binary-all/Packages
+ f3bc863f3b3a0923e83a532422b2ea911cc59ddc11e6374a094962cbec30eb8c             1126 main/binary-all/Packages.gz
+ b4a3217b127b8aa87efb75f52d9c7dffd2d491c547a2516f6d62e58f09253e2d             3318 main/binary-amd64/Packages
+ f3bc863f3b3a0923e83a532422b2ea911cc59ddc11e6374a094962cbec30eb8c             1126 main/binary-amd64/Packages.gz
+SHA512:
+ 209bce61bcafdd675608e25a132e03089ccbbf7701d5a540a3f2920cc0e4c768192599a07215372512ed62df9e131e507f716fd289cfba196cbf8c09ab93cff0             3318 main/binary-all/Packages
+ 0123ad927b35f520a57ff4857aa9ddeebb3eca648951930f57110dd93adbd8a1c4b58d195c6aecf1aec22850d0a2a4f27c552e59a24236682b2a3ca53219afc1             1126 main/binary-all/Packages.gz
+ 209bce61bcafdd675608e25a132e03089ccbbf7701d5a540a3f2920cc0e4c768192599a07215372512ed62df9e131e507f716fd289cfba196cbf8c09ab93cff0             3318 main/binary-amd64/Packages
+ 0123ad927b35f520a57ff4857aa9ddeebb3eca648951930f57110dd93adbd8a1c4b58d195c6aecf1aec22850d0a2a4f27c552e59a24236682b2a3ca53219afc1             1126 main/binary-amd64/Packages.gz

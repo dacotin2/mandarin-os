@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mandarin OS · Un escritorio claro y familiar para tu ordenador</title>
+<meta name="description" content="Mandarin OS es un sistema operativo gratuito basado en Debian: escritorio familiar con menú de inicio, explorador de archivos y actualizaciones automáticas. Pensado también para ordenadores antiguos.">
+<meta property="og:title" content="Mandarin OS">
+<meta property="og:description" content="Un escritorio claro y familiar, basado en Debian, para ordenadores nuevos y no tan nuevos.">
+<meta property="og:image" content="https://dacotin2.github.io/mandarin-os/img/escritorio-menu.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F26B1D">
+<link rel="icon" href="img/simbolo.svg" type="image/svg+xml">
+<link rel="preload" href="fuentes/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fuentes/InterDisplay-Light.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: Inter; src: url(fuentes/Inter-Regular.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: Inter; src: url(fuentes/Inter-Medium.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: Inter; src: url(fuentes/Inter-SemiBold.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Inter Display"; src: url(fuentes/InterDisplay-Thin.woff2) format("woff2"); font-weight: 100; font-display: swap; }
+@font-face { font-family: "Inter Display"; src: url(fuentes/InterDisplay-ExtraLight.woff2) format("woff2"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "Inter Display"; src: url(fuentes/InterDisplay-Light.woff2) format("woff2"); font-weight: 300; font-display: swap; }
+
+:root {
+	--mandarina: #F26B1D;
+	--mandarina-texto: #B3460B;
+	--mandarina-suave: #FDEBDD;
+	--tinta: #2B2420;
+	--tinta-suave: #5E5550;
+	--tenue: #8A817B;
+	--arena-50: #FBF8F5;
+	--arena-100: #F5F0EA;
+	--arena-200: #E9E1D8;
+	--blanco: #FFFFFF;
+	--noche: #1B1816;
+	--noche-2: #26211E;
+	--sombra: 0 30px 80px -20px rgba(80, 40, 10, .35), 0 12px 30px -12px rgba(43, 36, 32, .25);
+	--ancho: 1160px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+body {
+	margin: 0; background: var(--blanco); color: var(--tinta);
+	font: 17px/1.6 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+	font-feature-settings: "cv11", "ss01"; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--mandarina-texto); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+h1, h2, h3 { font-family: "Inter Display", Inter, sans-serif; font-weight: 200; letter-spacing: -.02em; line-height: 1.08; margin: 0; }
+h2 { font-size: clamp(34px, 5vw, 56px); }
+h3 { font-family: Inter, sans-serif; font-weight: 600; font-size: 19px; letter-spacing: -.01em; line-height: 1.3; }
+p { margin: 0; }
+.envoltura { max-width: var(--ancho); margin: 0 auto; padding: 0 24px; }
+/* que nada largo (la orden de wget) ensanche las rejillas en pantallas estrechas */
+.doble > *, .exe > *, .rejilla > *, .mosaico > *, .tabla-req > *, .modos > *, .pasos > * { min-width: 0; }
+.antetitulo { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--mandarina-texto); margin-bottom: 14px; }
+.entradilla { font-size: clamp(18px, 2vw, 21px); color: var(--tinta-suave); max-width: 640px; }
+.centrado { text-align: center; }
+.centrado .entradilla { margin-left: auto; margin-right: auto; }
+
+/* ─── Botones ─── */
+.boton {
+	display: inline-flex; align-items: center; gap: 10px; padding: 13px 24px; border-radius: 3px;
+	font: 500 16px/1 Inter, sans-serif; border: 1px solid transparent; cursor: pointer; transition: background .2s, border-color .2s, transform .2s;
+}
+.boton:hover { text-decoration: none; transform: translateY(-1px); }
+.boton-principal { background: var(--mandarina); color: #fff; }
+.boton-principal:hover { background: #E05A0E; }
+.boton-claro { color: var(--tinta); border-color: var(--arena-200); background: rgba(255,255,255,.7); }
+.boton-claro:hover { border-color: var(--tenue); }
+.boton svg { width: 18px; height: 18px; flex: none; }
+
+/* ─── Barra de navegación (cristal) ─── */
+.nav {
+	position: fixed; inset: 0 0 auto 0; z-index: 50; height: 64px;
+	background: rgba(255, 255, 255, .72); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+	border-bottom: 1px solid transparent; transition: border-color .3s;
+}
+.nav.con-borde { border-bottom-color: rgba(43, 36, 32, .08); }
+.nav .envoltura { display: flex; align-items: center; height: 100%; gap: 32px; }
+.nav .logo { display: flex; align-items: center; gap: 10px; color: var(--tinta); }
+.nav .logo:hover { text-decoration: none; }
+.nav .logo img { width: 30px; height: 30px; }
+.nav .logo span { font: 300 23px/1 "Inter Display", sans-serif; letter-spacing: -.01em; }
+.nav .logo b { font-weight: 300; color: var(--tenue); }
+.nav ul { list-style: none; display: flex; gap: 26px; margin: 0 0 0 auto; padding: 0; }
+.nav ul a { color: var(--tinta-suave); font-size: 15px; }
+.nav ul a:hover { color: var(--tinta); text-decoration: none; }
+.nav .boton { padding: 9px 16px; font-size: 14px; }
+
+/* ─── Portada ─── */
+.portada {
+	position: relative; padding: 148px 0 0; text-align: center; overflow: hidden;
+	background: radial-gradient(1200px 520px at 50% 105%, #FFD9BC 0%, rgba(255, 217, 188, 0) 70%),
+		linear-gradient(180deg, #FFFFFF 0%, var(--arena-50) 60%, #FFF1E6 100%);
+}
+.portada h1 { font-size: clamp(46px, 8vw, 96px); font-weight: 100; letter-spacing: -.035em; }
+.portada h1 em { font-style: normal; font-weight: 300; color: var(--mandarina); }
+.portada .entradilla { margin: 26px auto 0; max-width: 700px; }
+.portada .acciones { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+.portada .nota { margin-top: 16px; font-size: 14px; color: var(--tenue); }
+.equipo { position: relative; max-width: 1040px; margin: 72px auto 0; padding: 0 24px; }
+.pantalla {
+	position: relative; border-radius: 14px 14px 0 0; padding: 12px 12px 0; background: #1D1A18;
+	box-shadow: var(--sombra); border: 1px solid #3A3431; border-bottom: none;
+}
+.pantalla img { border-radius: 3px 3px 0 0; width: 100%; height: auto; }
+.pantalla::before { content: ""; position: absolute; top: 5px; left: 50%; width: 5px; height: 5px; margin-left: -2px; border-radius: 50%; background: #3A3431; }
+.base {
+	height: 18px; margin: 0 -56px; border-radius: 0 0 16px 16px; position: relative;
+	background: linear-gradient(180deg, #D9D3CE 0%, #BDB5AF 55%, #9D958F 100%);
+	box-shadow: 0 24px 40px -18px rgba(43, 36, 32, .45);
+}
+.base::before { content: ""; position: absolute; top: 0; left: 50%; width: 150px; margin-left: -75px; height: 7px; border-radius: 0 0 8px 8px; background: #A9A19B; }
+
+/* ─── Ventajas ─── */
+.ventajas { padding: 72px 0 36px; }
+.ventajas .rejilla { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
+.ventaja .icono { width: 44px; height: 44px; border-radius: 50%; background: var(--mandarina-suave); display: grid; place-items: center; margin-bottom: 16px; }
+.ventaja .icono svg { width: 22px; height: 22px; fill: var(--mandarina-texto); }
+.ventaja h3 { margin-bottom: 6px; }
+.ventaja p { color: var(--tinta-suave); font-size: 15.5px; }
+
+/* ─── Secciones con captura ─── */
+.seccion { padding: 110px 0; }
+.seccion.arena { background: var(--arena-50); }
+.doble { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: center; }
+.doble.al-reves { grid-template-columns: 7fr 5fr; }
+.doble.al-reves .texto { order: 2; }
+.texto h2 { margin-bottom: 20px; }
+.texto .entradilla { font-size: 18px; }
+.lista { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+.lista li { position: relative; padding-left: 28px; color: var(--tinta-suave); font-size: 16px; }
+.lista li::before { content: ""; position: absolute; left: 2px; top: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--mandarina); }
+.lista b { color: var(--tinta); font-weight: 600; }
+kbd {
+	font: 500 13px/1 Inter, sans-serif; padding: 3px 7px; border-radius: 3px; white-space: nowrap;
+	background: var(--blanco); border: 1px solid var(--arena-200); box-shadow: 0 1px 0 var(--arena-200); color: var(--tinta);
+}
+.captura {
+	position: relative; border-radius: 6px; overflow: hidden; box-shadow: var(--sombra); background: var(--arena-100);
+	cursor: zoom-in; transition: transform .35s ease;
+}
+.captura:hover { transform: translateY(-3px); }
+.captura img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; }
+.captura.recorte img { aspect-ratio: 4 / 3; }
+
+/* ─── Mosaico de aplicaciones ─── */
+.apps .cabecera { margin-bottom: 56px; }
+.mosaico { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.ficha { background: var(--blanco); border: 1px solid var(--arena-200); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow .3s, transform .3s; }
+.ficha:hover { box-shadow: 0 24px 50px -24px rgba(80, 40, 10, .35); transform: translateY(-3px); }
+.ficha .captura { box-shadow: none; border-radius: 0; border-bottom: 1px solid var(--arena-200); }
+.ficha .captura:hover { transform: none; }
+.ficha .cuerpo { padding: 22px 24px 26px; }
+.ficha h3 { margin-bottom: 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.ficha h3 kbd { font-size: 11.5px; }
+.ficha p { color: var(--tinta-suave); font-size: 15.5px; }
+
+/* ─── Claro u oscuro ─── */
+.oscuro { background: var(--noche); color: #F3EDE7; padding: 110px 0 120px; }
+.oscuro .antetitulo { color: #FF9B5E; }
+.oscuro .entradilla { color: #B9AEA6; }
+.comparador { position: relative; margin-top: 56px; border-radius: 6px; overflow: hidden; box-shadow: 0 40px 90px -30px rgba(0,0,0,.8); aspect-ratio: 16 / 10; user-select: none; touch-action: pan-y; cursor: ew-resize; }
+.comparador img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.comparador .encima { clip-path: inset(0 0 0 var(--corte, 50%)); }
+.comparador .linea { position: absolute; top: 0; bottom: 0; left: var(--corte, 50%); width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 12px rgba(0,0,0,.4); }
+.comparador .tirador {
+	position: absolute; top: 50%; left: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%;
+	background: rgba(255,255,255,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: grid; place-items: center; box-shadow: 0 4px 16px rgba(0,0,0,.35);
+}
+.comparador .tirador svg { width: 22px; height: 22px; fill: var(--tinta); }
+.comparador input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+.comparador .etiqueta { position: absolute; bottom: 16px; padding: 6px 12px; border-radius: 3px; font-size: 13px; font-weight: 500; background: rgba(0,0,0,.55); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); pointer-events: none; }
+.comparador .etiqueta.izq { left: 16px; }
+.comparador .etiqueta.der { right: 16px; }
+.fondos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 28px; }
+.fondos img { border-radius: 4px; aspect-ratio: 16 / 10; object-fit: cover; width: 100%; opacity: .9; transition: opacity .2s; }
+.fondos img:hover { opacity: 1; }
+.oscuro .pie-fondos { margin-top: 14px; font-size: 13px; color: #8E837B; }
+.oscuro .pie-fondos a { color: #C9BDB4; }
+
+/* ─── Requisitos ─── */
+.tabla-req { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 56px; }
+.req { border: 1px solid var(--arena-200); border-radius: 6px; padding: 32px 34px; background: var(--blanco); }
+.req.recomendado { border-color: var(--mandarina); box-shadow: 0 0 0 1px var(--mandarina) inset; }
+.req .antetitulo { margin-bottom: 6px; }
+.req h3 { font-family: "Inter Display", sans-serif; font-weight: 300; font-size: 30px; margin-bottom: 20px; }
+.req dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 12px 22px; font-size: 15.5px; }
+.req dt { color: var(--tenue); }
+.req dd { margin: 0; }
+.modos { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; }
+.modo { border-radius: 6px; padding: 28px 30px; background: var(--arena-50); }
+.modo h3 { margin-bottom: 8px; }
+.modo p { color: var(--tinta-suave); font-size: 15.5px; }
+
+/* ─── Programas de Windows ─── */
+.exe { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.exe .ilustracion { position: relative; aspect-ratio: 4 / 3; border-radius: 6px; background: linear-gradient(140deg, #FFF4EB, #FDE2CC); display: grid; place-items: center; overflow: hidden; }
+.archivo { width: 200px; text-align: center; }
+.archivo .hoja { position: relative; width: 132px; height: 164px; margin: 0 auto 18px; background: #fff; border-radius: 6px; box-shadow: 0 30px 50px -20px rgba(140,60,10,.45); display: grid; place-items: center; }
+.archivo .hoja::after { content: ""; position: absolute; top: 0; right: 0; width: 34px; height: 34px; background: linear-gradient(225deg, var(--arena-100) 50%, var(--arena-200) 50%); border-radius: 0 6px 0 4px; }
+.archivo .hoja b { font: 600 22px/1 Inter, sans-serif; color: var(--mandarina-texto); letter-spacing: .02em; }
+.archivo .nombre { font-size: 15px; color: var(--tinta); }
+.archivo .clic { display: inline-block; margin-top: 8px; font-size: 13px; color: var(--tenue); }
+
+/* ─── Descargar ─── */
+.descargar { background: linear-gradient(180deg, var(--arena-50), #FFF1E6); padding: 110px 0; }
+.pasos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 56px; counter-reset: paso; }
+.paso { background: var(--blanco); border: 1px solid var(--arena-200); border-radius: 6px; padding: 28px 28px 30px; }
+.paso::before { counter-increment: paso; content: counter(paso); display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--mandarina); color: #fff; font: 600 15px/1 Inter, sans-serif; margin-bottom: 18px; }
+.paso h3 { margin-bottom: 8px; }
+.paso p { color: var(--tinta-suave); font-size: 15.5px; }
+.caja-descarga { margin-top: 28px; border-radius: 6px; padding: 30px 34px; background: var(--blanco); border: 1px solid var(--arena-200); display: flex; gap: 28px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.caja-descarga h3 { font-family: "Inter Display", sans-serif; font-weight: 300; font-size: 26px; }
+.caja-descarga p { color: var(--tinta-suave); font-size: 15px; margin-top: 4px; }
+
+/* ─── Actualizaciones ─── */
+.actualizaciones .rejilla { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
+.estado { border: 1px solid var(--arena-200); border-radius: 6px; overflow: hidden; }
+.estado .fila { display: flex; justify-content: space-between; gap: 20px; padding: 16px 22px; border-top: 1px solid var(--arena-200); font-size: 15px; }
+.estado .fila:first-child { border-top: none; }
+.estado .fila span:first-child { color: var(--tenue); }
+.estado .fila code { font: 500 14px/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace; }
+.estado .verde { display: inline-flex; align-items: center; gap: 8px; }
+.estado .verde::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #2E9E5B; box-shadow: 0 0 0 4px rgba(46,158,91,.15); }
+pre.orden {
+	margin: 14px 0 0; padding: 16px 18px; border-radius: 4px; background: var(--noche); color: #F3EDE7; overflow-x: auto;
+	font: 14px/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+pre.orden::before { content: "$ "; color: #FF9B5E; }
+
+/* ─── Pie ─── */
+footer { border-top: 1px solid var(--arena-200); padding: 48px 0 56px; font-size: 14px; color: var(--tenue); }
+footer .envoltura { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
+footer .logo { display: flex; align-items: center; gap: 10px; color: var(--tinta); margin-bottom: 14px; }
+footer .logo img { width: 26px; height: 26px; }
+footer .logo span { font: 300 20px/1 "Inter Display", sans-serif; }
+footer h4 { margin: 0 0 12px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta); }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+footer a { color: var(--tinta-suave); }
+
+/* ─── Visor de capturas ─── */
+.visor { position: fixed; inset: 0; z-index: 100; background: rgba(20, 16, 14, .86); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+.visor.abierto { display: flex; animation: aparecer .2s ease; }
+.visor img { max-width: min(1440px, 100%); max-height: calc(100vh - 90px); width: auto; height: auto; border-radius: 4px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.visor p { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: #E9E1D8; font-size: 14px; }
+@keyframes aparecer { from { opacity: 0; } }
+
+/* ─── Aparición al desplazarse ─── */
+.aparece { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.aparece.visto { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .aparece { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+/* ─── Pantallas estrechas ─── */
+@media (max-width: 980px) {
+	.nav ul { display: none; }
+	.nav .boton { margin-left: auto; }
+	.ventajas .rejilla { grid-template-columns: 1fr 1fr; }
+	.doble, .doble.al-reves, .exe, .actualizaciones .rejilla { grid-template-columns: 1fr; gap: 40px; }
+	.doble.al-reves .texto { order: 0; }
+	.mosaico { grid-template-columns: 1fr 1fr; }
+	.pasos { grid-template-columns: 1fr; }
+	.fondos { grid-template-columns: repeat(3, 1fr); }
+	.base { margin: 0 -20px; }
+	footer .envoltura { grid-template-columns: 1fr 1fr; }
+	footer .envoltura > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+	body { font-size: 16px; }
+	.envoltura { padding: 0 16px; }
+	.portada { padding-top: 116px; }
+	.equipo { padding: 0 16px; margin-top: 48px; }
+	.pantalla { padding: 6px 6px 0; border-radius: 9px 9px 0 0; }
+	.base { height: 10px; margin: 0 -10px; }
+	.ventajas .rejilla, .mosaico, .tabla-req, .modos { grid-template-columns: 1fr; }
+	.seccion, .oscuro, .descargar { padding: 76px 0; }
+	.req { padding: 26px 22px; }
+	.caja-descarga { padding: 26px 22px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+	<div class="envoltura">
+		<a class="logo" href="#"><img src="img/simbolo.svg" alt=""><span>mandarin <b>OS</b></span></a>
+		<ul>
+			<li><a href="#escritorio">Escritorio</a></li>
+			<li><a href="#apps">Aplicaciones</a></li>
+			<li><a href="#oscuro">Tema oscuro</a></li>
+			<li><a href="#equipos">Requisitos</a></li>
+			<li><a href="#actualizaciones">Actualizaciones</a></li>
+		</ul>
+		<a class="boton boton-principal" href="#descargar">Descargar</a>
+	</div>
+</nav>
+
+<header class="portada">
+	<div class="envoltura">
+		<p class="antetitulo">Mandarin OS 1.0</p>
+		<h1>Tu ordenador,<br><em>como nuevo.</em></h1>
+		<p class="entradilla">Un sistema operativo gratuito, claro y luminoso. Se maneja como el escritorio que ya conoces y da una segunda vida a ese portátil que parecía demasiado lento.</p>
+		<div class="acciones">
+			<a class="boton boton-principal" href="#descargar">
+				<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 3h2v10.17l3.59-3.58L18 11l-6 6-6-6 1.41-1.41L11 13.17V3zM5 19h14v2H5z"/></svg>
+				Descargar Mandarin OS
+			</a>
+			<a class="boton boton-claro" href="#escritorio">Descubrir cómo es</a>
+		</div>
+		<p class="nota">Gratis · Basado en Debian 13 · Desde 2 GB de memoria</p>
+	</div>
+	<div class="equipo">
+		<div class="pantalla"><img src="img/escritorio-menu.webp" width="1718" height="920" alt="El escritorio de Mandarin OS con el menú de inicio abierto sobre un fondo de dunas"></div>
+		<div class="base"></div>
+	</div>
+</header>
+
+<section class="ventajas">
+	<div class="envoltura rejilla">
+		<div class="ventaja aparece">
+			<div class="icono"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3V5zm2 2v7h14V7H5zm3 11h8v2H8v-2z"/></svg></div>
+			<h3>Familiar desde el primer día</h3>
+			<p>Botón de inicio, barra de tareas, explorador y panel de control donde esperas encontrarlos.</p>
+		</div>
+		<div class="ventaja aparece">
+			<div class="icono"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+			<h3>Ligero de verdad</h3>
+			<p>Funciona con 2 GB de memoria y gráficas antiguas. En equipos modernos, con todos los efectos.</p>
+		</div>
+		<div class="ventaja aparece">
+			<div class="icono"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg></div>
+			<h3>Seguro y al día</h3>
+			<p>Actualizaciones firmadas de Debian y de Mandarin, con avisos claros y sin escribir órdenes.</p>
+		</div>
+		<div class="ventaja aparece">
+			<div class="icono"><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg></div>
+			<h3>Abre programas de Windows</h3>
+			<p>Haz doble clic en un archivo <b>.exe</b> y Mandarin se encarga de abrirlo.</p>
+		</div>
+	</div>
+</section>
+
+<section class="seccion" id="escritorio">
+	<div class="envoltura doble">
+		<div class="texto aparece">
+			<p class="antetitulo">Escritorio</p>
+			<h2>Todo donde lo esperas.</h2>
+			<p class="entradilla">El menú de inicio de dos columnas reúne tus programas, tus carpetas y el apagado en un solo sitio. La barra de tareas agrupa las ventanas abiertas y el reloj está donde siempre.</p>
+			<ul class="lista">
+				<li><b>Menú de inicio</b> con búsqueda: pulsa <kbd>⊞ Windows</kbd> y escribe.</li>
+				<li><b>Barra de tareas</b> con los programas anclados y un clic derecho que ofrece lo de siempre: administrador de tareas, mostrar el escritorio…</li>
+				<li><b>Cristal esmerilado</b> en la barra, el menú y las ventanas, como en los móviles.</li>
+			</ul>
+		</div>
+		<div class="captura aparece" data-pie="Menú de inicio sobre el explorador de archivos">
+			<img src="img/explorador-menu.webp" width="1440" height="900" loading="lazy" alt="Menú de inicio abierto sobre la ventana del explorador de archivos">
+		</div>
+	</div>
+</section>
+
+<section class="seccion arena">
+	<div class="envoltura doble al-reves">
+		<div class="texto aparece">
+			<p class="antetitulo">Explorador de archivos</p>
+			<h2>Tus cosas, ordenadas.</h2>
+			<p class="entradilla">Un explorador hecho para Mandarin, con acceso rápido a tus carpetas, archivos recientes y todas tus unidades a la vista.</p>
+			<ul class="lista">
+				<li><b>Acceso rápido</b> a Escritorio, Documentos, Descargas, Imágenes, Música y Vídeos.</li>
+				<li><b>Este equipo</b> muestra tus discos y memorias USB con su espacio libre.</li>
+				<li>Comprime y extrae archivos <b>.zip</b>, <b>.rar</b> o <b>.7z</b> desde el clic derecho.</li>
+				<li>Ábrelo en cualquier momento con <kbd>⊞</kbd> + <kbd>E</kbd>.</li>
+			</ul>
+		</div>
+		<div class="captura aparece" data-pie="Explorador de archivos">
+			<img src="img/explorador.webp" width="1440" height="900" loading="lazy" alt="El explorador de archivos de Mandarin OS mostrando el acceso rápido">
+		</div>
+	</div>
+</section>
+
+<section class="seccion apps" id="apps">
+	<div class="envoltura">
+		<div class="cabecera centrado aparece">
+			<p class="antetitulo">Aplicaciones de Mandarin</p>
+			<h2>Herramientas que ya sabes usar.</h2>
+			<p class="entradilla" style="margin-top:20px">Mandarin trae sus propias aplicaciones para el día a día del equipo, todas con el mismo estilo y en español.</p>
+		</div>
+		<div class="mosaico">
+			<article class="ficha aparece">
+				<div class="captura" data-pie="Mandarin Update"><img src="img/update.webp" width="1718" height="920" loading="lazy" alt="Mandarin Update indicando que el equipo está al día"></div>
+				<div class="cuerpo"><h3>Mandarin Update</h3><p>Busca e instala las actualizaciones del sistema con un par de clics, y te avisa cuando hay novedades.</p></div>
+			</article>
+			<article class="ficha aparece">
+				<div class="captura" data-pie="Administrador de tareas"><img src="img/tareas.webp" width="1718" height="920" loading="lazy" alt="El administrador de tareas mostrando el rendimiento del procesador"></div>
+				<div class="cuerpo"><h3>Administrador de tareas <kbd>Ctrl Mayús Esc</kbd></h3><p>Procesos, rendimiento, programas de inicio y servicios. Cierra lo que se haya quedado colgado.</p></div>
+			</article>
+			<article class="ficha aparece">
+				<div class="captura" data-pie="Centro de actividades"><img src="img/actividades.webp" width="860" height="538" loading="lazy" alt="El centro de actividades abierto junto al reloj"></div>
+				<div class="cuerpo"><h3>Centro de actividades <kbd>⊞ A</kbd></h3><p>Wi-Fi, modo avión, luz nocturna, no molestar, brillo y volumen, a un clic desde la barra.</p></div>
+			</article>
+			<article class="ficha aparece">
+				<div class="captura" data-pie="Recortes"><img src="img/recortes.webp" width="1440" height="900" loading="lazy" alt="Recortes seleccionando una zona de la pantalla"></div>
+				<div class="cuerpo"><h3>Recortes <kbd>⊞ Mayús S</kbd></h3><p>Congela la pantalla para que nada se mueva mientras eliges. Después, anota y copia.</p></div>
+			</article>
+			<article class="ficha aparece">
+				<div class="captura" data-pie="Salud del equipo"><img src="img/salud.webp" width="1718" height="920" loading="lazy" alt="Salud del equipo indicando que el equipo está en buena forma"></div>
+				<div class="cuerpo"><h3>Salud del equipo</h3><p>Revisa el disco, la batería, la temperatura y la red, y te explica en palabras sencillas qué hacer.</p></div>
+			</article>
+			<article class="ficha aparece">
+				<div class="captura" data-pie="Panel de control"><img src="img/panel.webp" width="1440" height="900" loading="lazy" alt="El panel de control con sus categorías"></div>
+				<div class="cuerpo"><h3>Panel de control</h3><p>Toda la configuración ordenada por categorías: sistema, redes, programas, apariencia y más.</p></div>
+			</article>
+		</div>
+	</div>
+</section>
+
+<section class="oscuro" id="oscuro">
+	<div class="envoltura">
+		<div class="centrado aparece">
+			<p class="antetitulo">Claro u oscuro</p>
+			<h2>De día y de noche.</h2>
+			<p class="entradilla" style="margin-top:20px">Cambia entre el tema claro y el oscuro desde el Panel de control. Todas las aplicaciones de Mandarin se adaptan, y la luz nocturna cuida tus ojos por la noche.</p>
+		</div>
+		<div class="comparador aparece" id="comparador">
+			<img src="img/claro.webp" width="1440" height="900" loading="lazy" alt="Mandarin OS con el tema claro">
+			<img class="encima" src="img/oscuro.webp" width="1440" height="900" loading="lazy" alt="Mandarin OS con el tema oscuro">
+			<div class="linea"></div>
+			<div class="tirador" style="left:var(--corte,50%)"><svg viewBox="0 0 24 24"><path d="M8.5 6 3 12l5.5 6 1.4-1.4L5.8 12l4.1-4.6L8.5 6zm7 0-1.4 1.4 4.1 4.6-4.1 4.6 1.4 1.4L21 12l-5.5-6z"/></svg></div>
+			<span class="etiqueta izq">Claro</span><span class="etiqueta der">Oscuro</span>
+			<input type="range" min="0" max="100" value="50" aria-label="Comparar el tema claro y el oscuro">
+		</div>
+		<div class="fondos aparece">
+			<img src="img/fondos/dunas.webp" loading="lazy" alt="Fondo de dunas">
+			<img src="img/fondos/naranjo.webp" loading="lazy" alt="Fondo de un naranjo">
+			<img src="img/fondos/mandarinas.webp" loading="lazy" alt="Fondo de mandarinas">
+			<img src="img/fondos/atardecer-en-el-mar.webp" loading="lazy" alt="Fondo de un atardecer en el mar">
+			<img src="img/fondos/dunas-de-erg-chebbi.webp" loading="lazy" alt="Fondo de las dunas de Erg Chebbi">
+			<img src="img/fondos/naranjas-al-sol.webp" loading="lazy" alt="Fondo de naranjas al sol">
+		</div>
+		<p class="pie-fondos centrado">Incluye nueve fondos de escritorio. Fotos de Wikimedia Commons con licencia libre: <a href="CREDITOS-fondos.txt">ver autores y licencias</a>.</p>
+	</div>
+</section>
+
+<section class="seccion" id="equipos">
+	<div class="envoltura">
+		<div class="centrado aparece">
+			<p class="antetitulo">Requisitos</p>
+			<h2>Para el equipo que ya tienes.</h2>
+			<p class="entradilla" style="margin-top:20px">Mandarin está pensado para portátiles de hace quince años con 2 GB de memoria, y en un convertible táctil actual va igual de bien. Al arrancar mira qué gráfica tienes y activa solo lo que tu equipo puede mover con soltura.</p>
+		</div>
+		<div class="tabla-req">
+			<div class="req aparece">
+				<p class="antetitulo">Mínimo</p>
+				<h3>Lo justo para ir bien</h3>
+				<dl>
+					<dt>Procesador</dt><dd>64 bits (Intel Core 2 Duo, AMD Athlon 64 X2 o posterior)</dd>
+					<dt>Memoria</dt><dd>2 GB</dd>
+					<dt>Disco</dt><dd>20 GB libres</dd>
+					<dt>Gráfica</dt><dd>Cualquiera con OpenGL 2.1</dd>
+					<dt>Arranque</dt><dd>BIOS o UEFI, desde un USB de 4 GB</dd>
+				</dl>
+			</div>
+			<div class="req recomendado aparece">
+				<p class="antetitulo">Recomendado</p>
+				<h3>Con todos los efectos</h3>
+				<dl>
+					<dt>Procesador</dt><dd>64 bits de doble núcleo o más</dd>
+					<dt>Memoria</dt><dd>4 GB o más</dd>
+					<dt>Disco</dt><dd>40 GB o más (mejor un SSD)</dd>
+					<dt>Gráfica</dt><dd>Con OpenGL 3.3 o Vulkan</dd>
+					<dt>Extras</dt><dd>Pantalla táctil, giro automático y teclado en pantalla si tu equipo los tiene</dd>
+				</dl>
+			</div>
+		</div>
+		<div class="modos">
+			<div class="modo aparece">
+				<h3>Modo completo</h3>
+				<p>Cristal esmerilado en vivo en la barra, el menú y las ventanas, con sombras y transiciones suaves. Se activa solo en equipos con una gráfica moderna.</p>
+			</div>
+			<div class="modo aparece">
+				<h3>Modo ligero</h3>
+				<p>Para gráficas antiguas: el mismo aspecto con un cristal «pintado» que no gasta recursos. Puedes cambiar de modo cuando quieras en el Panel de control.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="seccion arena" id="windows">
+	<div class="envoltura exe">
+		<div class="texto aparece">
+			<p class="antetitulo">Programas de Windows</p>
+			<h2>¿Tienes un .exe? Doble clic.</h2>
+			<p class="entradilla">Muchos programas y juegos de Windows funcionan en Mandarin sin preparar nada: el sistema reconoce el archivo y lo abre con Wine. Si un programa se instala, aparece en el menú de inicio como cualquier otro.</p>
+			<ul class="lista">
+				<li>La <b>Tienda</b> instala miles de aplicaciones libres con un clic, también desde Flathub.</li>
+				<li>Incluye <b>Firefox</b>, <b>LibreOffice</b> (opcional al instalar), calculadora, bloc de notas y descompresor.</li>
+			</ul>
+		</div>
+		<div class="ilustracion aparece">
+			<div class="archivo">
+				<div class="hoja"><b>.EXE</b></div>
+				<div class="nombre">instalar-programa.exe</div>
+				<span class="clic">Doble clic para abrir</span>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="descargar" id="descargar">
+	<div class="envoltura">
+		<div class="centrado aparece">
+			<p class="antetitulo">Descargar</p>
+			<h2>Pruébalo sin tocar tu disco.</h2>
+			<p class="entradilla" style="margin-top:20px">Mandarin arranca desde un USB para que lo pruebes tal cual. Si te gusta, el asistente lo instala en unos minutos.</p>
+		</div>
+		<div class="pasos">
+			<div class="paso aparece"><h3>Descarga la imagen</h3><p>Un único archivo ISO para cualquier ordenador de 64 bits, nuevo o antiguo.</p></div>
+			<div class="paso aparece"><h3>Grábala en un USB</h3><p>Con balenaEtcher, Rufus o Ventoy, en un USB de 4 GB o más. Se borrará lo que contenga.</p></div>
+			<div class="paso aparece"><h3>Arranca e instala</h3><p>Enciende el equipo desde el USB, prueba Mandarin y pulsa <b>Instalar Mandarin OS</b> en el escritorio.</p></div>
+		</div>
+		<div class="caja-descarga aparece">
+			<div>
+				<h3>Mandarin OS 1.0 · 64 bits</h3>
+				<p>La imagen para descargar se publicará aquí muy pronto. Los equipos con Mandarin ya reciben todas las novedades por Mandarin Update.</p>
+			</div>
+			<a class="boton boton-claro" href="#actualizaciones">Ver las actualizaciones</a>
+		</div>
+	</div>
+</section>
+
+<section class="seccion actualizaciones" id="actualizaciones">
+	<div class="envoltura rejilla">
+		<div class="texto aparece">
+			<p class="antetitulo">Actualizaciones</p>
+			<h2>Siempre al día.</h2>
+			<p class="entradilla">Esta web es también el servidor de actualizaciones de Mandarin. Los equipos instalados las reciben solos en <b>Mandarin Update</b>, junto con las de Debian.</p>
+		</div>
+		<div class="aparece">
+			<div class="estado">
+				<div class="fila"><span>Estado</span><span class="verde">En servicio</span></div>
+				<div class="fila"><span>Versión publicada</span><code>1.0.202611171952</code></div>
+				<div class="fila"><span>Canal</span><code>estable</code></div>
+				<div class="fila"><span>Firma</span><a href="mandarin-os.asc">Clave pública de Mandarin OS</a></div>
+			</div>
+			<p style="margin-top:26px;color:var(--tinta-suave);font-size:15.5px">¿Instalaste Mandarin con una imagen de antes de que existieran las actualizaciones? Se activan una sola vez abriendo el Terminal y escribiendo:</p>
+			<pre class="orden">wget -qO- https://dacotin2.github.io/mandarin-os/instalar.sh | sudo sh</pre>
+		</div>
+	</div>
+</section>
+
+<footer>
+	<div class="envoltura">
+		<div>
+			<div class="logo"><img src="img/simbolo.svg" alt=""><span>mandarin OS</span></div>
+			<p>Un proyecto personal basado en Debian GNU/Linux y XFCE. Mandarin OS no está relacionado con Microsoft ni con Apple; Windows es una marca de Microsoft Corporation.</p>
+		</div>
+		<div>
+			<h4>Mandarin</h4>
+			<ul>
+				<li><a href="#escritorio">Escritorio</a></li>
+				<li><a href="#apps">Aplicaciones</a></li>
+				<li><a href="#equipos">Requisitos</a></li>
+				<li><a href="#descargar">Descargar</a></li>
+			</ul>
+		</div>
+		<div>
+			<h4>Créditos</h4>
+			<ul>
+				<li><a href="https://www.debian.org/">Debian</a> · <a href="https://xfce.org/">XFCE</a></li>
+				<li><a href="https://rsms.me/inter/">Tipografía Inter</a></li>
+				<li><a href="CREDITOS-fondos.txt">Fotos de los fondos</a></li>
+				<li><a href="https://github.com/dacotin2/mandarin-os">GitHub</a></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+
+<div class="visor" id="visor" role="dialog" aria-modal="true" aria-label="Captura ampliada"><img alt=""><p></p></div>
+
+<script>
+(() => {
+	const nav = document.getElementById('nav');
+	const borde = () => nav.classList.toggle('con-borde', scrollY > 8);
+	addEventListener('scroll', borde, { passive: true }); borde();
+
+	// aparición suave al llegar a cada bloque
+	const obs = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
+		if (e.isIntersecting) { e.target.classList.add('visto'); obs.unobserve(e.target); }
+	}), { rootMargin: '0px 0px -8% 0px' }) : null;
+	document.querySelectorAll('.aparece').forEach(el => obs ? obs.observe(el) : el.classList.add('visto'));
+
+	// comparador claro / oscuro
+	const comp = document.getElementById('comparador');
+	const rango = comp.querySelector('input');
+	const poner = v => comp.style.setProperty('--corte', v + '%');
+	rango.addEventListener('input', () => poner(rango.value));
+	poner(rango.value);
+
+	// visor de capturas a pantalla completa
+	const visor = document.getElementById('visor');
+	const vimg = visor.querySelector('img'), vpie = visor.querySelector('p');
+	document.querySelectorAll('.captura').forEach(c => c.addEventListener('click', () => {
+		const img = c.querySelector('img');
+		vimg.src = img.currentSrc || img.src; vimg.alt = img.alt; vpie.textContent = c.dataset.pie || img.alt;
+		visor.classList.add('abierto');
+	}));
+	const cerrar = () => visor.classList.remove('abierto');
+	visor.addEventListener('click', cerrar);
+	addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+})();
+</script>
+</body>
+</html>

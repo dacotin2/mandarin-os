@@ -1,0 +1,60 @@
+Package: mandarin-escritorio
+Architecture: amd64
+Version: 1.0.202611171721
+Priority: optional
+Section: x11
+Maintainer: Mandarin OS <noreply@mandarin-os.invalid>
+Installed-Size: 10772
+Depends: python3, python3-gi, gir1.2-gtk-3.0, gir1.2-wnck-3.0, python3-psutil, libglib2.0-bin, wpasupplicant, systemd-timesyncd, bluez, blueman, libspa-0.2-bluetooth, libxtst6, gir1.2-pango-1.0
+Recommends: packagekit, gnome-software, xarchiver, mate-calc, fastfetch, papirus-icon-theme
+Filename: pool/main/mandarin-escritorio_1.0.202611171721_amd64.deb
+Size: 5495548
+MD5sum: aad59a89cd302915a2e6ab57be47e4ba
+SHA1: ffb016d47d74f2688156f56c649b2111d960f04b
+SHA256: 3975121a33073e98fb5a523e88071b56542ce0c82b39295bf64f0fe6a27e49de
+SHA512: 32e3db5f7a050c09ae6fd3fa1b9734ec57f2a8a3db0a3342fdec056d2bd86ed2d9b289f3520a5f3d99d0112cf648f2d2187b8a4e5a4f3ad6a59fca601b222129
+Description: Escritorio de Mandarin OS
+ Menú de inicio, explorador de archivos, Panel de control, Administrador de
+ tareas, tema, iconos, instalador y ajustes de Mandarin OS. Al actualizar este
+ paquete se actualiza todo lo propio del sistema.
+
+Package: mandarin-escritorio
+Architecture: amd64
+Version: 1.0.202611171737
+Priority: optional
+Section: x11
+Maintainer: Mandarin OS <noreply@mandarin-os.invalid>
+Installed-Size: 10796
+Depends: python3, python3-gi, gir1.2-gtk-3.0, gir1.2-wnck-3.0, python3-psutil, libglib2.0-bin, wpasupplicant, systemd-timesyncd, bluez, blueman, libspa-0.2-bluetooth, libxtst6, gir1.2-pango-1.0, dmz-cursor-theme
+Recommends: packagekit, gnome-software, xarchiver, mate-calc, fastfetch, papirus-icon-theme
+Filename: pool/main/mandarin-escritorio_1.0.202611171737_amd64.deb
+Size: 5496632
+MD5sum: ad2fee224d3a4ab02016a65943a5ba7e
+SHA1: 01607eeeca2285efaa34b42f8cc3b31ecc59ea1c
+SHA256: a03fd1d2adcec224b3f6845b09b756dc1e8d830664b991c5ab8dc85cbd2147e9
+SHA512: a9d58eff62f4a68d263834d7eb520e502e93bdd33c95988026fa802d77004dc9172089fa6d6e9ba178acd55db92f40c95fdaa75d7a37b0372d9de5c97d4d4689
+Description: Escritorio de Mandarin OS
+ Menú de inicio, explorador de archivos, Panel de control, Administrador de
+ tareas, tema, iconos, instalador y ajustes de Mandarin OS. Al actualizar este
+ paquete se actualiza todo lo propio del sistema.
+
+Package: mandarin-escritorio
+Architecture: amd64
+Version: 1.0.202611171952
+Priority: optional
+Section: x11
+Maintainer: Mandarin OS <noreply@mandarin-os.invalid>
+Installed-Size: 10796
+Depends: python3, python3-gi, gir1.2-gtk-3.0, gir1.2-wnck-3.0, python3-psutil, libglib2.0-bin, wpasupplicant, systemd-timesyncd, bluez, blueman, libspa-0.2-bluetooth, libxtst6, gir1.2-pango-1.0, dmz-cursor-theme
+Recommends: packagekit, gnome-software, xarchiver, mate-calc, fastfetch, papirus-icon-theme
+Filename: pool/main/mandarin-escritorio_1.0.202611171952_amd64.deb
+Size: 5497460
+MD5sum: 3c319f3bac20741af1ecd1d5de6b3a89
+SHA1: fc15dafec285c64700721eaa11aded30016e473c
+SHA256: f263fddd517c0c6d55c25338f5ead03e32ee607843841790bca13c48d8ecb255
+SHA512: e48fc0323a30f587aa7facb84bf7c17b32f7a4885a5341206e0305e21ac6a94dcd77001b018ef7191516ef01bd83a34b659de42ae0467e7d43a11119d53180e3
+Description: Escritorio de Mandarin OS
+ Menú de inicio, explorador de archivos, Panel de control, Administrador de
+ tareas, tema, iconos, instalador y ajustes de Mandarin OS. Al actualizar este
+ paquete se actualiza todo lo propio del sistema.
+

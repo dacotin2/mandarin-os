@@ -1,0 +1,44 @@
+Fondos de escritorio de Mandarin OS
+
+dunas.jpg: fondo original de Mandarin OS.
+Las demás son fotos de Wikimedia Commons con licencia libre; para Mandarin OS se han recortado a 16:9 y reducido.
+
+naranjo.jpg
+  «Sapindales - Citrus sinensis - 6.jpg», de Emőke Dénes
+  Licencia: CC BY-SA 4.0
+  https://commons.wikimedia.org/wiki/File:Sapindales_-_Citrus_sinensis_-_6.jpg
+
+naranjas-al-sol.jpg
+  «2019-05-16 11-53-48 PT Lisbon JHe K70 (54148607602).jpg», de Jan Helebrant
+  Licencia: CC0
+  https://commons.wikimedia.org/wiki/File:2019-05-16_11-53-48_PT_Lisbon_JHe_K70_(54148607602).jpg
+
+naranjas-de-kozan.jpg
+  «Local Orange Variety of Kozan - Kozan Yerli Portakal 04.jpg», de Zeynel Cebeci
+  Licencia: CC BY-SA 3.0
+  https://commons.wikimedia.org/wiki/File:Local_Orange_Variety_of_Kozan_-_Kozan_Yerli_Portakal_04.jpg
+
+mandarinas.jpg
+  «Orange Fruit (Unsplash).jpg», de Keilidh Ewan keilidhewan
+  Licencia: CC0
+  https://commons.wikimedia.org/wiki/File:Orange_Fruit_(Unsplash).jpg
+
+atardecer-en-el-mar.jpg
+  «Sunset by the Sea (31045900942).jpg», de Susanne Nilsson
+  Licencia: CC BY-SA 2.0
+  https://commons.wikimedia.org/wiki/File:Sunset_by_the_Sea_(31045900942).jpg
+
+dunas-de-erg-chebbi.jpg
+  «Erg Chebbi sunset.jpg», de Thomas Fuhrmann
+  Licencia: CC BY-SA 4.0
+  https://commons.wikimedia.org/wiki/File:Erg_Chebbi_sunset.jpg
+
+cielo-del-thar.jpg
+  «Thar desert sunset!.jpg», de Rajarshi MITRA
+  Licencia: CC BY 2.0
+  https://commons.wikimedia.org/wiki/File:Thar_desert_sunset!.jpg
+
+dunas-de-merzouga.jpg
+  «The Merzouga dunes of Morocco.jpg», de Mustang Joe
+  Licencia: CC0
+  https://commons.wikimedia.org/wiki/File:The_Merzouga_dunes_of_Morocco.jpg
